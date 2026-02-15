@@ -8,6 +8,7 @@ A Docker-based nginx web server setup with automatic SSL certificate management 
 - Docker Compose 2.0+
 - A registered domain name with DNS pointing to your server
 - Ports 80 and 443 available
+- Docker network `docker.local` created (see step 1 below)
 
 ## Quick Start
 
@@ -17,22 +18,27 @@ A Docker-based nginx web server setup with automatic SSL certificate management 
    cd <project-directory>
    ```
 
-2. Update `nginx/conf/default.conf` with your domain name:
+2. Create the Docker network:
+   ```bash
+   docker network create docker.local
+   ```
+
+3. Update `nginx/conf/default.conf` with your domain name:
    ```nginx
    server_name yourdomain.com *.yourdomain.com;
    ```
 
-3. Generate initial SSL certificates:
+4. Generate initial SSL certificates:
    ```bash
    docker compose run --rm certbot certonly --webroot -w /var/www/certbot -d yourdomain.com -d www.yourdomain.com --agree-tos -m your-email@example.com
    ```
 
-4. Start the services:
+5. Start the services:
    ```bash
    docker compose up -d
    ```
 
-5. Verify the setup:
+6. Verify the setup:
    ```bash
    curl -I https://yourdomain.com
    ```

@@ -11,6 +11,8 @@ services:
       - ./nginx/certs:/etc/nginx/certs:ro
       - ./nginx/logs:/var/log/nginx
       - ./certbot/www:/var/www/certbot:ro
+    networks:
+      - docker.local
 
   certbot:
     image: certbot/certbot:latest
@@ -19,3 +21,7 @@ services:
       - ./nginx/certs:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+networks:
+  docker.local:
+    external: true
