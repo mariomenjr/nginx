@@ -85,7 +85,13 @@ Certbot runs as a background service and automatically renews certificates every
 
 Generate new certificates:
 ```bash
-docker compose run --rm certbot certonly --webroot -w /var/www/certbot -d yourdomain.com -d www.yourdomain.com
+docker exec -it certbot certbot certonly \
+  --manual \
+  --preferred-challenges dns \
+  -d "sample.com" \
+  -d "*.sample.com" \
+  --agree-tos \
+  -m sample@sample.com
 ```
 
 Force renewal (for testing):
